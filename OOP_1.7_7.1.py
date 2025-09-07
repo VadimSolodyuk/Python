@@ -66,6 +66,8 @@ from string import ascii_lowercase, digits
 class TextInput:
     CHARS = "абвгдеёжзийклмнопрстуфхцчшщьыъэюя " + ascii_lowercase
     CHARS_CORRECT = CHARS + CHARS.upper() + digits
+    MIN_SIZE_NAME = 3
+    MAX_SIZE_NAME = 50
     
     def __init__(self, name, size=10):
         self.__check_name(name)
@@ -74,11 +76,10 @@ class TextInput:
         
     @classmethod    
     def __check_name(cls, name):
-        if 50 < len(name) or len(name) < 3:
+        if cls.MAX_SIZE_NAME < len(name) or len(name) < cls.MIN_SIZE_NAME:
             raise ValueError("некорректное поле name")
-        for char in name:
-            if char not in cls.CHARS_CORRECT:
-                 raise ValueError("некорректное поле name")
+        if not set(name) < set(cls.CHARS_CORRECT): 
+            raise ValueError("некорректное поле name")
         
     def get_html(self):
         return f"<p class='login'>{self.name}: \
@@ -88,6 +89,8 @@ class TextInput:
 class PasswordInput:
     CHARS = "абвгдеёжзийклмнопрстуфхцчшщьыъэюя " + ascii_lowercase
     CHARS_CORRECT = CHARS + CHARS.upper() + digits
+    MIN_SIZE_NAME = 3
+    MAX_SIZE_NAME = 50
     
     def __init__(self, name, size=10):
         self.__check_name(name)
@@ -96,11 +99,10 @@ class PasswordInput:
         
     @classmethod    
     def __check_name(cls, name):
-        if 50 < len(name) or len(name) < 3:
+        if cls.MAX_SIZE_NAME < len(name) or len(name) < cls.MIN_SIZE_NAME:
             raise ValueError("некорректное поле name")
-        for char in name:
-            if char not in cls.CHARS_CORRECT:
-                 raise ValueError("некорректное поле name")
+        if not set(name) < set(cls.CHARS_CORRECT): 
+            raise ValueError("некорректное поле name")
 
     def get_html(self):
         return f"<p class='password'>{self.name}: \
