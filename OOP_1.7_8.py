@@ -49,9 +49,21 @@ class CardCheck:
             
         return True
     
-    @staticmethod
-    def __get_fragments_of_number(number):
-        if type(number) != str:
-            raise ValueError('неверный формат аргумета number')
+    @classmethod
+    def __get_fragments_of_number(cls, number):
+        cls.__is_string(number)
         return number.split('-')
+    
+    @staticmethod
+    def __is_string(string):
+        if type(string) != str:
+            raise ValueError('неверный формат аргумета number')
+    
+    @classmethod
+    def check_name(cls, name):
+        cls.__is_string(name)
+        
+        
+            
+        return True
     
