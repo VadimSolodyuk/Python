@@ -44,7 +44,7 @@ class CardCheck:
         for i, fragment in enumerate(fragments_of_number):
             if len(fragment) != len(fragments_of_format_number[i]):
                 return False
-            elif set(fragment) > set(digits):
+            elif not set(fragment) < set(digits):
                  return False
             
         return True
@@ -52,7 +52,7 @@ class CardCheck:
     @classmethod
     def __get_fragments_of_number(cls, number):
         cls.__is_string(number)
-        return number.split('-')
+        return tuple(number.split('-'))
     
     @staticmethod
     def __is_string(string):
@@ -62,8 +62,15 @@ class CardCheck:
     @classmethod
     def check_name(cls, name):
         cls.__is_string(name)
-        
-        
+        fragments_of_name = (name.split(' '))
+        if len(fragments_of_name) > 2:
+            return False
+        for fragment in fragments_of_name:
+            if not set(fragment) < set(cls.CHARS_FOR_NAME):
+                return False
             
         return True
     
+    
+print(CardCheck.check_card_number('12A4-5678-9012-0000'))
+print(CardCheck.check_name('SERGEI BALAKIREV'))
