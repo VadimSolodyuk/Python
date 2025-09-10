@@ -76,7 +76,9 @@ class TextInput:
         
     @classmethod    
     def __check_name(cls, name):
-        if cls.MAX_SIZE_NAME < len(name) or len(name) < cls.MIN_SIZE_NAME:
+        if type(name) != str \
+                or cls.MAX_SIZE_NAME < len(name) \
+                or len(name) < cls.MIN_SIZE_NAME:
             raise ValueError("некорректное поле name")
         if not set(name) < set(cls.CHARS_CORRECT): 
             raise ValueError("некорректное поле name")
@@ -99,7 +101,9 @@ class PasswordInput:
         
     @classmethod    
     def __check_name(cls, name):
-        if cls.MAX_SIZE_NAME < len(name) or len(name) < cls.MIN_SIZE_NAME:
+        if type(name) != str \
+                or cls.MAX_SIZE_NAME < len(name) \
+                or len(name) < cls.MIN_SIZE_NAME:
             raise ValueError("некорректное поле name")
         if not set(name) < set(cls.CHARS_CORRECT): 
             raise ValueError("некорректное поле name")

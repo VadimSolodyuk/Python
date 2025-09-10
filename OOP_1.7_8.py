@@ -32,6 +32,7 @@ from string import ascii_uppercase, digits
 
 class CardCheck:
     CHARS_FOR_NAME = ascii_uppercase + digits
+    SET_CHARS_FOR_NAME = set(CHARS_FOR_NAME)
     FORMAT_NUMBER = 'XXXX-XXXX-XXXX-XXXX'
     
     @classmethod
@@ -42,10 +43,9 @@ class CardCheck:
         if len(fragments_of_number) != len(fragments_of_format_number):
             return False
         for i, fragment in enumerate(fragments_of_number):
-            if len(fragment) != len(fragments_of_format_number[i]):
+            if len(fragment) != len(fragments_of_format_number[i]) \
+                    or not fragment.isdigit():
                 return False
-            elif not set(fragment) < set(digits):
-                 return False
             
         return True
     
@@ -57,20 +57,20 @@ class CardCheck:
     @staticmethod
     def __is_string(string):
         if type(string) != str:
-            raise ValueError('неверный формат аргумета number')
+            return False
     
     @classmethod
     def check_name(cls, name):
         cls.__is_string(name)
         fragments_of_name = (name.split(' '))
-        if len(fragments_of_name) > 2:
+        if len(fragments_of_name) != 2:
             return False
         for fragment in fragments_of_name:
-            if not set(fragment) < set(cls.CHARS_FOR_NAME):
+            if not set(fragment) < cls.SET_CHARS_FOR_NAME:
                 return False
             
         return True
     
     
-print(CardCheck.check_card_number('12A4-5678-9012-0000'))
+print(CardCheck.check_card_number('1204-5678-9012-0000'))
 print(CardCheck.check_name('SERGEI BALAKIREV'))
