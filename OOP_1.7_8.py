@@ -32,7 +32,7 @@ from string import ascii_uppercase, digits
 
 class CardCheck:
     CHARS_FOR_NAME = ascii_uppercase + digits
-    SET_CHARS_FOR_NAME = set(CHARS_FOR_NAME)
+    set_chars_for_name = set(CHARS_FOR_NAME)
     FORMAT_NUMBER = 'XXXX-XXXX-XXXX-XXXX'
     
     @classmethod
