@@ -159,36 +159,87 @@
 
 # print(t_table)
 
-class Video:
-    def create(self, name):
+
+'''# OOP_1.7.10
+
+class AppStore:
+    def __init__(self):
+        self.applications = {}
+    
+    # Добавление нового приложения app в магазин
+    def add_application(self, app):
+        self.applications[id(app)] = app
+    
+    # Удаление приложения app из магазина
+    def remove_application(self, app):
+        if self.__in_appStore(app):
+            del self.applications[id(app)]
+        
+    # Блокировка приложения app (устанавливает локальное свойство blocked
+    # объекта app в значение True)
+    def block_application(self, app):
+        if self.__in_appStore(app):
+            self.applications[id(app)].blocked = True
+    
+    # Возвращает общее число приложений в магазине
+    def total_apps(self):
+        return len(self.applications)
+    
+    def __in_appStore(self, app):
+        return id(app) in self.applications
+    
+    
+class Application:
+    def __init__(self, name):
         self.name = name
-        
-    def play(self):
-        print(f"воспроизведение видео {self.name}")
+        self.blocked = False
         
         
-class YouTube:
-    lst_videos = []
+store = AppStore()
+app_youtube = Application("Youtube")
+store.add_application(app_youtube)
+store.remove_application(app_youtube)
+'''
+
+# OOP_1.7.11
+
+class Message:
+    def __init__(self, text):
+        self.text = text
+        self.fl_like = False
+        
+        
+class Viber:
+    messages = {}
+    
+    # Добавление нового сообщения в список сообщений
+    @classmethod
+    def add_message(cls, message):
+        cls.messages[id(message)]
+    
+    # Удаление сообщения из списка
+    @classmethod
+    def remove_message(cls, message):
+        if cls.__in_viber(message):
+            del cls.messages[id(message)]
+    
+    # Поставить/убрать лайк для сообщения msg (т.е. изменить атрибут fl_like
+    # объекта msg: если лайка нет то он ставится, если уже есть, то убирается)
+    @classmethod
+    def set_like(cls, message):
+        if cls.__in_viber(message):
+            cls.messages[id(message)].fl_like = \
+                not cls.messages[id(message)].fl_like
+                
+    # Отображение последних сообщений
+    def show_last_message(number):
+        
+    
+    # Возвращает общее число сообщений
+    @classmethod
+    def total_messages(cls):
+        return len(cls.messages)
     
     @classmethod
-    def add_video(cls, video):
-        cls.lst_videos.append(video)
-        
-    @classmethod
-    def play(cls, video_index):
-        if video_index > len(cls.lst_videos) - 1:
-            raise ValueError('index does not exist')
-        cls.lst_videos[video_index].play()
-        
-        
-v1 = Video()
-v2 = Video()
-
-v1.create('Python')
-v2.create('Python ООП')
-
-YouTube.add_video(v1)
-YouTube.add_video(v2)
-
-YouTube.play(0)
-YouTube.play(1)
+    def __in_viber(cls, message):
+        return id(message) in cls.messages 
