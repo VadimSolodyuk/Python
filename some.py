@@ -201,7 +201,7 @@ store.add_application(app_youtube)
 store.remove_application(app_youtube)
 '''
 
-# OOP_1.7.11
+'''# OOP_1.7.11
 
 class Message:
     def __init__(self, text):
@@ -215,7 +215,7 @@ class Viber:
     # Добавление нового сообщения в список сообщений
     @classmethod
     def add_message(cls, message):
-        cls.messages[id(message)]
+        cls.messages[id(message)] = message
     
     # Удаление сообщения из списка
     @classmethod
@@ -233,8 +233,8 @@ class Viber:
                 
     # Отображение последних сообщений
     def show_last_message(number):
-        
-    
+        pass
+            
     # Возвращает общее число сообщений
     @classmethod
     def total_messages(cls):
@@ -243,3 +243,4 @@ class Viber:
     @classmethod
     def __in_viber(cls, message):
         return id(message) in cls.messages 
+'''
