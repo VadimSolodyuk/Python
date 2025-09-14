@@ -160,7 +160,7 @@
 # print(t_table)
 
 
-'''# OOP_1.7.10
+''' OOP_1.7.10
 
 class AppStore:
     def __init__(self):
@@ -201,7 +201,7 @@ store.add_application(app_youtube)
 store.remove_application(app_youtube)
 '''
 
-'''# OOP_1.7.11
+''' OOP_1.7.11
 
 class Message:
     def __init__(self, text):
@@ -244,3 +244,5 @@ class Viber:
     def __in_viber(cls, message):
         return id(message) in cls.messages 
 '''
+
+
