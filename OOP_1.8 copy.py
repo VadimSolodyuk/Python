@@ -80,15 +80,16 @@ msg_lst_to = sv_to.get_data()
 не нужно.
 """
 
+
 class Router:
     def __init__(self):
         self.buffer = {}
 
-    # Присоединение сервера server (объекта класса Server)
-    # к роутеру (для простоты, каждый сервер соединен только с одним
-    # роутером)
+    # Присоединение объекта класса Server к роутеру (для простоты, 
+    # каждый сервер соединен только с одним роутером)
     def link(self, server):
         if not self.__is_linked(server):
+            server.router = self
             self.buffer[server.get_ip()] = []
             
     def __is_linked(self, server):
@@ -97,7 +98,11 @@ class Router:
     # Отсоединение сервера server (объекта класса Server) от роутера
     def unlink(self,server):
         if self.__is_linked(server):
+            server.router = None
             del self.buffer[server.get_ip()]
+
+    def __recieving_data(self, data):
+
     
     # Отправка всех пакетов (объектов класса Data) из буфера
     # роутера соответствующим серверам (после отправки буфер должен
@@ -105,20 +110,36 @@ class Router:
     def send_data(self):
         pass
     
+
 class Server:
     NUMBER = 0
     
     def __init__(self):
         self.ip = self.__set_ip()
+        self.router = None
         
     @classmethod
     def __set_ip(cls):
         cls.NUMBER += 1
         return cls.NUMBER
     
+    # Для отправки информационного пакета data (объекта класса Data)
+    # с указанным IP-адресом получателя (пакет отправляется 
+    # роутеру и сохраняется в его буфере - локаьном свойстве buffer)
+    def send_data(self, data):
+        if self.router:
+            self.router.__recieve_data(data)
+
+    # Возвращает список принятых пакетов (если ничего принятоне было,
+    # то возвращается пустой список) и очищает входной буфер
+    def get_data(self):
+
+
     def get_ip(self):
         return self.ip
     
+
+# Описания пакета информации
 class Data:
     def __init__(self, data, to_ip):
         self.data = data
