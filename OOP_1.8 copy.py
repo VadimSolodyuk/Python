@@ -83,39 +83,47 @@ msg_lst_to = sv_to.get_data()
 
 class Router:
     def __init__(self):
-        self.buffer = {}
-
+        self.buffer = []
+        self.servers = {}
+        
     # Присоединение объекта класса Server к роутеру (для простоты, 
     # каждый сервер соединен только с одним роутером)
     def link(self, server):
         if not self.__is_linked(server):
-            server.router = self
-            self.buffer[server.get_ip()] = []
+            server.link_router(self)
+            self.servers[server.get_ip()] = server
             
     def __is_linked(self, server):
-        return server.get_ip() in self.buffer
+        return server.get_ip() in self.servers
 
     # Отсоединение сервера server (объекта класса Server) от роутера
-    def unlink(self,server):
+    def unlink(self, server):
         if self.__is_linked(server):
-            server.router = None
-            del self.buffer[server.get_ip()]
+            server.unlink_router()
+            del self.servers[server.get_ip()]
 
-    def __recieving_data(self, data):
-
+    def add_data(self, data):
+        if type(data) != Data:
+            raise ValueError
+        self.buffer.append(data) 
     
     # Отправка всех пакетов (объектов класса Data) из буфера
     # роутера соответствующим серверам (после отправки буфер должен
     # очищаться)
     def send_data(self):
-        pass
-    
+        while len(self.buffer) != 0:
+            data = self.buffer.pop()
+            ip_server = data.get_ip()
+            if ip_server in self.servers:
+                self.servers[ip_server].add_data(data)
+
 
 class Server:
     NUMBER = 0
     
     def __init__(self):
         self.ip = self.__set_ip()
+        self.buffer = []
         self.router = None
         
     @classmethod
@@ -125,15 +133,28 @@ class Server:
     
     # Для отправки информационного пакета data (объекта класса Data)
     # с указанным IP-адресом получателя (пакет отправляется 
-    # роутеру и сохраняется в его буфере - локаьном свойстве buffer)
+    # роутеру и сохраняется в его буфеsре - локаьном свойстве buffer)
     def send_data(self, data):
-        if self.router:
-            self.router.__recieve_data(data)
+        if self.router != None:
+            self.router.add_data(data)
 
     # Возвращает список принятых пакетов (если ничего принятоне было,
     # то возвращается пустой список) и очищает входной буфер
     def get_data(self):
-
+        buffer = self.buffer[:]
+        self.buffer.clear()
+        return buffer
+    
+    def add_data(self, data):
+        self.buffer.append(data) 
+    
+    def link_router(self, router):
+        if type(router) != Router:
+            raise ValueError
+        self.router = router
+        
+    def unlink_router(self):
+        self.router = None
 
     def get_ip(self):
         return self.ip
@@ -144,9 +165,9 @@ class Data:
     def __init__(self, data, to_ip):
         self.data = data
         self.to_ip = to_ip
-
-
-
+        
+    def get_ip(self):
+        return self.to_ip
 
 
 router = Router()
