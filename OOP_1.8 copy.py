@@ -90,8 +90,8 @@ class Router:
     # каждый сервер соединен только с одним роутером)
     def link(self, server):
         if not self.__is_linked(server):
-            server.link_router(self)
             self.servers[server.get_ip()] = server
+            server.link_router(self)
             
     def __is_linked(self, server):
         return server.get_ip() in self.servers
@@ -99,8 +99,8 @@ class Router:
     # Отсоединение сервера server (объекта класса Server) от роутера
     def unlink(self, server):
         if self.__is_linked(server):
-            server.unlink_router()
             del self.servers[server.get_ip()]
+            server.unlink_router()
 
     def add_data(self, data):
         if type(data) != Data:
@@ -119,7 +119,7 @@ class Router:
 
 
 class Server:
-    NUMBER = 0
+    NUMBER_SERVERS = 0
     
     def __init__(self):
         self.ip = self.__set_ip()
@@ -128,14 +128,14 @@ class Server:
         
     @classmethod
     def __set_ip(cls):
-        cls.NUMBER += 1
-        return cls.NUMBER
+        cls.NUMBER_SERVERS += 1
+        return cls.NUMBER_SERVERS
     
     # Для отправки информационного пакета data (объекта класса Data)
     # с указанным IP-адресом получателя (пакет отправляется 
     # роутеру и сохраняется в его буфеsре - локаьном свойстве buffer)
     def send_data(self, data):
-        if self.router != None:
+        if self.router:
             self.router.add_data(data)
 
     # Возвращает список принятых пакетов (если ничего принятоне было,
