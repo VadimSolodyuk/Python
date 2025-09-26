@@ -39,16 +39,90 @@ P.S. На экран ничего выводить не нужно.
 class LinkedList:
     def __init__(self):
         self.head = None
-        self.tail = self.head
+        self.tail = None
 
     # Добавление нового объекта obj класса ObjList в конец связного списка
     def add_obj(self, obj):
-        pass
+        if self.__is_empty_List():
+            self.head = self.tail = obj
+        else:
+            self.tail.set_next(obj)
+            obj.set_prev = self.tail
+            self.tail = obj
+
+    def __is_empty_List(self):
+        return self.head == None
         
     # Удаление последнего объекта из связного списка;
     def remove_obj(self):
-        pass
+        if not self.__is_empty_List():
+            if self.head == self.tail:
+                self.head == self.tail = None
+            else:
+                self.tail = self.tail.get_prev()
+                self.tail.set_next(None)
 
     # Получение списка из строк локального свойства __data всех объектов связного списка
     def get_data(self):
-        pass
+        res_data = []
+        if not self.__is_empty_List():
+            obj = self.head
+            while obj:
+                res_data.append(obj.get_data())
+                obj = obj.get_next()
+
+        return res_data 
+
+class ObjList:
+    def __init__(self, data):
+        self.set_data(data)
+        self.__next = None
+        self.__prev = None
+
+# Изменение приватного свойства __next на значение obj
+def set_next(self, obj):
+    if self.__check_object(obj):
+        self.__next = obj
+
+# Изменение приватного свойства __prev на значение obj
+def set_prev(self, obj):
+    if self.__check_object(obj):
+        self.__prev = obj
+
+@staticmethod
+def __check_object(obj):
+    if not isinstance(obj, (ObjList, None)):
+        raise ValueError('Type "obj" should be "ObjList" or "None"')
+    else:
+        True
+
+# Получение значения приватного свойства __next
+def get_next(self):
+    return self.__next
+
+# Получение значения приватного свойства __prev
+def get_prev(self):
+    return self.__prev
+
+# Изменение приватного свойства __data на значение data
+def set_data(self, data):
+    if self.__check_data(data):
+        self.__data = data
+
+@classmethod
+def __check_data(cls, data):
+    if not isinstance(data, str):
+        raise ValueError('Type "data" should be "str"')
+    else:
+        True
+
+# Получение значения приватного свойства __data
+def get_data(self):
+    return self.__data
+
+
+lst = LinkedList()
+lst.add_obj(ObjList("данные 1"))
+lst.add_obj(ObjList("данные 2"))
+lst.add_obj(ObjList("данные 3"))
+res = lst.get_data()    # ['данные 1', 'данные 2', 'данные 3']
