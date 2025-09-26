@@ -57,7 +57,7 @@ class LinkedList:
     def remove_obj(self):
         if not self.__is_empty_List():
             if self.head == self.tail:
-                self.head == self.tail = None
+                self.head = self.tail = None
             else:
                 self.tail = self.tail.get_prev()
                 self.tail.set_next(None)
