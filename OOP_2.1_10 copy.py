@@ -13,12 +13,12 @@ xxxxxxx...xxx@gmail.com, где x - любой допустимый символ
 check_email(cls, email) - возвращает True, если email записан верно
 и False - в противном случае.
 Корректность строки email определяется по следующим критериям:
-- допустимые символы: латинский алфавит, цифры, символы подчеркивания,
++ допустимые символы: латинский алфавит, цифры, символы подчеркивания,
 точки и собачка @ (одна);
-- длина email до символа @ не должна превышать 100 (сто включительно);
-- длина email после символа @ не должна быть больше 50 (включительно);
-- после символа @ обязательно должна идти хотя бы одна точка;
-- не должно быть двух точек подряд.
++ длина email до символа @ не должна превышать 100 (сто включительно);
++ длина email после символа @ не должна быть больше 50 (включительно);
+- после символа @ обязательно должна идти хотя бы одна точка; 
++ не должно быть двух точек подряд.
 
 Также в классе нужно реализовать приватный статический метод класса:
 
@@ -41,9 +41,11 @@ from string import ascii_letters, digits
 
 
 class EmailValidator:
-    CORRECT_CHARS = ascii_letters + digits + '_.'
+    CORRECT_CHARS = ascii_letters + digits + '_.@'
+    separator = '@' 
     length_mailbox_name = 100
     length_domain = 50
+    
     domain_gmail = "gmail.com"
     
     def __new__(cls):
@@ -58,13 +60,29 @@ class EmailValidator:
         if not cls.__is_email_str(email):
             return False
         elif (not set(email) < set(cls.CORRECT_CHARS)
-              or ):
+              or email.count(cls.separator) != 1
+              or email.find('..') != -1):
             return False
+        
+        mailbox_name, domain = email.split(cls.separator)
+        if not (cls.__check_mailbox_name(mailbox_name)
+                and cls.__check_domain(domain)):
+            return False
+        
+        return True
         
     @classmethod
     def __check_mailbox_name(cls, mailbox_name):
+        return len(mailbox_name) <= cls.length_mailbox_name
             
-            
+    
+    @classmethod
+    def __check_domain(cls, domain):
+        if (len(domain) > cls.length_domain
+            or domain.count('.') < 1):
+            return False
+        
+        return True
     
     @staticmethod
     def __is_email_str(email):
