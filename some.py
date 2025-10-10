@@ -244,5 +244,3 @@ class Viber:
     def __in_viber(cls, message):
         return id(message) in cls.messages 
 '''
-
-
