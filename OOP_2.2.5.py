@@ -38,14 +38,13 @@ class WindowDlg:
         self.__height = height
         
     def set_title(self, title):
-        if self.__check_title(title):
-            self.__title = title
+        self.__check_title(title)
+        self.__title = title
     
     @classmethod        
     def __check_title(cls, title):
         if not isinstance(title, str):
-            return ValueError
-        return True
+            raise TypeError
     
     def show(self):
         print(f"{self.__title}: {self.width}, {self.height}")
@@ -56,9 +55,9 @@ class WindowDlg:
         
     @width.setter
     def width(self, width):
-        if self.__check_size(width):
-            self.__width = width
-            self.show()
+        self.__check_size(width)
+        self.__width = width
+        self.show()
         
     @property
     def height(self):
@@ -66,18 +65,16 @@ class WindowDlg:
         
     @height.setter
     def height(self, height):
-        if self.__check_size(height):
-            self.__height = height
-            self.show()
+        self.__check_size(height)
+        self.__height = height
+        self.show()
     
     @classmethod    
     def __check_size(cls, value):
-        if not (type(value) == int
-                and cls.min_window_size <= value <= cls.max_window_size):
-            return False
-        
-        return True
-            
+        if type(value) != int:
+            raise TypeError
+        if not (cls.min_window_size <= value <= cls.max_window_size):
+            raise ValueError
     
 wind = WindowDlg("Main", 0 , 30)        
     
