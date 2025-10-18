@@ -55,3 +55,75 @@ res = st.get_data()    # ['obj1', 'obj2']
 P.S. В программе требуется объявить только классы. На экран ничего 
 выводить не нужно. 
 """
+
+
+class StackObj():
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        
+    @property
+    def data(self):
+        return self.__data
+    
+    @data.setter
+    def data(self, data):
+        if self.__check_data(data):
+            self.__data = data
+    
+    @staticmethod
+    def __check_data(data):
+        if not isinstance(data, str):
+            return False  # ValueError
+        return True
+        
+    @property
+    def next(self):
+        return self.__next
+    
+    @next.setter
+    def next(self, obj):
+        if self.__check_obj(obj):
+            self.__next = next
+    
+    @classmethod
+    def __check_obj(cls, obj):
+        if not isinstance(obj, (cls, None)):
+            return False  # ValueError
+        return True
+        
+        
+class Stack:
+    stack_item_type = (StackObj,)
+    
+    def __init__(self):
+        self.top = None
+        
+    def push(self, obj):
+        if self.__check_obj(obj):
+            if not self.top:
+                self.top = obj
+            else:
+                bottom_obj = self.__get_bottom_obj(self.top)
+                bottom_obj.next = obj
+                self.top = bottom_obj.next
+            
+    @classmethod
+    def __check_obj(cls, obj):
+        if type(obj) not in cls.stack_item_type:
+            return ValueError
+        return True
+    
+    @classmethod
+    def __get_penult_obj(cls, top_obj):
+        if top_obj.next and not top_obj.next.next:
+            return top_obj
+        cls.__get_penult_obj(top_obj.next)
+        
+    def pop(self):
+        if self.top:
+            bottom_obj = self.__get_bottom_obj(self.top)
+            bottom_obj.next = obj
+            self.top = bottom_obj.next
+            
+    
