@@ -68,14 +68,14 @@ class StackObj():
     
     @data.setter
     def data(self, data):
-        if self.__check_data(data):
-            self.__data = data
+        self.__check_data(data)
+        self.__data = data
     
     @staticmethod
     def __check_data(data):
         if not isinstance(data, str):
-            return False  # ValueError
-        return True
+            raise TypeError  # return False  # ValueError
+        # return True
         
     @property
     def next(self):
@@ -89,41 +89,58 @@ class StackObj():
     @classmethod
     def __check_obj(cls, obj):
         if not isinstance(obj, (cls, None)):
-            return False  # ValueError
+            return False  # raise TypeError
+        
         return True
         
         
 class Stack:
-    stack_item_type = (StackObj,)
+    stack_items_type = (StackObj,)
     
     def __init__(self):
         self.top = None
         
     def push(self, obj):
-        if self.__check_obj(obj):
-            if not self.top:
-                self.top = obj
-            else:
-                bottom_obj = self.__get_bottom_obj(self.top)
-                bottom_obj.next = obj
-                self.top = bottom_obj.next
+        self.__check_obj(obj)
+        if not self.top:
+            self.top = obj
+        else:
+            bottom_obj = self.__get_penult_obj(self.top).next
+            bottom_obj.next = obj
             
     @classmethod
     def __check_obj(cls, obj):
-        if type(obj) not in cls.stack_item_type:
-            return ValueError
-        return True
+        if not isinstance(obj, cls.stack_items_type):
+            raise TypeError
     
-    @classmethod
-    def __get_penult_obj(cls, top_obj):
-        if top_obj.next and not top_obj.next.next:
-            return top_obj
-        cls.__get_penult_obj(top_obj.next)
+    def __get_penult_obj(self, obj):
+        next_obj = obj.next
+        if next_obj and not next_obj.next:
+            return obj
+        self.__get_penult_obj(next_obj)
         
     def pop(self):
         if self.top:
-            bottom_obj = self.__get_bottom_obj(self.top)
-            bottom_obj.next = obj
-            self.top = bottom_obj.next
+            new_bottom_obj = self.__get_penult_obj(self.top)
+            if new_bottom_obj == self.top:
+                self.top = None
+                return new_bottom_obj
+            else:
+                bottom_obj = new_bottom_obj.next
+                new_bottom_obj.next = None
+                return bottom_obj
+            
+    def get_data(self):
+        res = []
+        
+        while self 
+            
+            
+st = Stack()
+st.push(StackObj("obj1"))
+st.push(StackObj("obj2"))
+st.push(StackObj("obj3"))
+st.pop()
+res = st.get_data()    # ['obj1', 'obj2']
             
     
