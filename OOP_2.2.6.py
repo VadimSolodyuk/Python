@@ -88,7 +88,7 @@ class StackObj():
     
     @classmethod
     def __check_obj(cls, obj):
-        if type(obj) != cls and type(obj) != type(None):
+        if type(obj) != cls and obj != None:
             return False  # raise TypeError
         
         return True
@@ -104,6 +104,8 @@ class Stack:
         self.__check_obj(obj)
         if self.top == None:
             self.top = obj
+        elif self.top.next is None:
+            self.top.next = obj
         else:
             bottom_obj = self.__get_penult_obj(self.top).next
             bottom_obj.next = obj
@@ -115,20 +117,22 @@ class Stack:
     
     def __get_penult_obj(self, obj):
         next_obj = obj.next
-        if next_obj and next_obj.next == None:
+        print(next_obj.data, ' ', next_obj.next)
+        if next_obj and next_obj.next is None:
             return obj
         self.__get_penult_obj(next_obj)
         
     def pop(self):
         if self.top:
-            new_bottom_obj = self.__get_penult_obj(self.top)
-            if new_bottom_obj == self.top:
+            if self.top.next is None:
+                pop_obj = self.top
                 self.top = None
-                return new_bottom_obj
             else:
+                new_bottom_obj = self.__get_penult_obj(self.top)
                 pop_obj = new_bottom_obj.next
                 new_bottom_obj.next = None
-                return pop_obj
+            
+            return pop_obj
             
     def get_data(self):
         res = []
@@ -143,8 +147,10 @@ class Stack:
 st = Stack()
 st.push(StackObj("obj1"))
 st.push(StackObj("obj2"))
-# st.push(StackObj("obj3"))
-# st.pop()
-# res = st.get_data()    # ['obj1', 'obj2']
+st.push(StackObj("obj3"))
+res = st.get_data()    # ['obj1', 'obj2']
+print(res)
+st.pop()
+print(res)
             
     
