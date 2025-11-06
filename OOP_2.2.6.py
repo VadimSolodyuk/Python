@@ -99,16 +99,16 @@ class Stack:
     
     def __init__(self):
         self.top = None
+        self.last = None
         
     def push(self, obj):
         self.__check_obj(obj)
-        if self.top == None:
-            self.top = obj
-        elif self.top.next is None:
-            self.top.next = obj
+        if self.last:
+            self.last.next = obj
+            self.last = self.last.next
         else:
-            bottom_obj = self.__get_penult_obj(self.top).next
-            bottom_obj.next = obj
+            self.top = obj
+            self.last = self.top
             
     @classmethod
     def __check_obj(cls, obj):
@@ -116,23 +116,24 @@ class Stack:
             raise TypeError
     
     def __get_penult_obj(self, obj):
-        next_obj = obj.next
-        print(next_obj.data, ' ', next_obj.next)
-        if next_obj and next_obj.next is None:
-            return obj
-        self.__get_penult_obj(next_obj)
+        res = obj
+        while res.next.next:
+            res = res.next
+        
+        return res
         
     def pop(self):
-        if self.top:
-            if self.top.next is None:
-                pop_obj = self.top
-                self.top = None
-            else:
-                new_bottom_obj = self.__get_penult_obj(self.top)
-                pop_obj = new_bottom_obj.next
-                new_bottom_obj.next = None
-            
-            return pop_obj
+        if not self.top:
+            return
+        if self.top.next is None:
+            pop_obj = self.top
+            self.top = None
+        else:
+            new_bottom_obj = self.__get_penult_obj(self.top)
+            pop_obj = new_bottom_obj.next
+            new_bottom_obj.next = None
+        
+        return pop_obj
             
     def get_data(self):
         res = []
@@ -148,9 +149,10 @@ st = Stack()
 st.push(StackObj("obj1"))
 st.push(StackObj("obj2"))
 st.push(StackObj("obj3"))
-res = st.get_data()    # ['obj1', 'obj2']
+res = st.get_data()    # ['obj1', 'obj2' 'obj3']
 print(res)
 st.pop()
+res = st.get_data()    # ['obj1', 'obj2']
 print(res)
             
     
