@@ -103,12 +103,12 @@ class Stack:
         
     def push(self, obj):
         self.__check_obj(obj)
-        if self.last:
-            self.last.next = obj
-            self.last = self.last.next
-        else:
+        if not self.last:
             self.top = obj
             self.last = self.top
+        else:
+            self.last.next = obj
+            self.last = self.last.next
             
     @classmethod
     def __check_obj(cls, obj):
@@ -125,13 +125,14 @@ class Stack:
     def pop(self):
         if not self.top:
             return
-        if self.top.next is None:
+        elif not self.top.next:
             pop_obj = self.top
             self.top = None
         else:
-            new_bottom_obj = self.__get_penult_obj(self.top)
-            pop_obj = new_bottom_obj.next
-            new_bottom_obj.next = None
+            new_last = self.__get_penult_obj(self.top)
+            pop_obj = new_last.next
+            self.last = new_last
+            self.last.next = None
         
         return pop_obj
             
