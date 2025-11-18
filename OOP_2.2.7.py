@@ -1,4 +1,25 @@
-"""
+"""Подвиг 7. Объявите класс RadiusVector2D, объекты которого должны создаваться командами:
+v1 = RadiusVector2D()        # радиус-вектор с координатами (0; 0)
+v2 = RadiusVector2D(1)       # радиус-вектор с координатами (1; 0)
+v3 = RadiusVector2D(1, 2)    # радиус-вектор с координатами (1; 2)
+                  
+В каждом объекте класса RadiusVector2D должны формироваться локальные приватные атрибуты:
+__x, __y - координаты конца вектора (изначально значения равны 0, если не передано какое-либо другое).
+
+В классе RadiusVector2D необходимо объявить два объекта-свойства:
+x - для изменения и считывания локального атрибута __x;
+y - для изменения и считывания локального атрибута __y.
+
+При инициализации и изменении локальных атрибутов, необходимо проверять корректность передаваемых значений:
+- значение должно быть числом (целым или вещественным) в диапазоне [MIN_COORD; MAX_COORD].
+
+Если проверка не проходит, то координаты не меняются (напомню, что при инициализации они изначально равны 0).
+Величины MIN_COORD = -100, MAX_COORD = 1024 задаются как публичные атрибуты класса RadiusVector2D.
+Также в классе RadiusVector2D необходимо объявить статический метод:
+norm2(vector) - для вычисления квадратической нормы vector - переданного объекта класса RadiusVector2D
+(квадратическая норма вектора: x*x + y*y).
+
+P.S. В программе требуется объявить только класс. На экран ничего выводить не нужно.
 """
 
 
@@ -7,6 +28,7 @@ class RadiusVector2D:
     MAX_COORD = 1024
 
     def __init__(self, x=0, y=0):
+        self.__x = self.__y = 0
         self.x = x
         self.y = y
 
@@ -16,11 +38,7 @@ class RadiusVector2D:
     
     @x.setter
     def x(self, value):
-        if not self.__check_coord_value(value):
-            # if self.__x:
-            #     return
-            self.__x = 0
-        else:
+        if self.__is_valid_coord(value):
             self.__x = value
 
     @property
@@ -29,21 +47,13 @@ class RadiusVector2D:
     
     @y.setter
     def y(self, value):
-        if not self.__check_coord_value(value):
-            # if self.__y:
-            #     return
-            self.__y = 0
-        else:
+        if self.__is_valid_coord(value):
             self.__y = value
 
     @classmethod
-    def __check_coord_value(cls, value):
-        if not ((type(value) == int or type(value) == float)
-                and cls.MIN_COORD <= value <= cls.MAX_COORD):
-            return False
-        else:
-            return True
-        
+    def __is_valid_coord(cls, value):
+        return type(value) in (int, float) and cls.MIN_COORD <= value <= cls.MAX_COORD
+
     @staticmethod
     def norm2(vector):
         return vector.x**2 + vector.y**2
@@ -51,8 +61,7 @@ class RadiusVector2D:
 
 r1 = RadiusVector2D()
 print(r1.x, r1.y)
-r2 = RadiusVector2D(1, -101)
+r2 = RadiusVector2D(1, 101)
 print(r2.x, r2.y)
-r2.x = '5'
+r2.x = 5
 print(r2.x, r2.y)
-print(r2.__dict__)
