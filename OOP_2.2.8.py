@@ -63,16 +63,19 @@ class TreeObj:
 
 
 class DecisionTree:
+    tree = []
+
     @classmethod
     def add_obj(cls, obj, node=None, left=True):
         cls.__is_node(obj)
-        if node is None:
-            return obj
-        cls.__is_node(node)
-        if left:
-            node.left = obj
-        else:
-            node.right = obj
+        if node is not None:
+            cls.__is_node(node)
+            if left:
+                node.left = obj
+            else:
+                node.right = obj
+
+        cls.tree.append(obj)
 
         return obj
     
@@ -83,16 +86,23 @@ class DecisionTree:
         
     @classmethod
     def predict(cls, root, x):
-        node = root
-        for i in x:
-            if i:
-                if node.left:
-                    node = node.left
-            else:
-                if node.right:
-                    node = node.right    
+        # node = root
+        # for i in x:
+        #     if i:
+        #         if node.left:
+        #             node = node.left
+        #     else:
+        #         if node.right:
+        #             node = node.right
+        value = ''    
+        for index in x:
+            val = cls.tree[index].value
+            if val:
+                value = val
+
+        return value
+
        
-        return node.value
 
 
     
