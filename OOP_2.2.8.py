@@ -44,7 +44,7 @@ class TreeObj:
 
     @left.setter
     def left(self, node):
-        self.__is_node(node)
+        self.is_node(node)
         self.__left = node
 
     @property
@@ -53,60 +53,42 @@ class TreeObj:
 
     @right.setter
     def right(self, node):
-        self.__is_node(node)
+        self.is_node(node)
         self.__right = node
     
     @staticmethod
-    def __is_node(node):
+    def is_node(node):
         if node and type(node) != TreeObj:
             raise TypeError    
 
 
 class DecisionTree:
-    tree = []
-
     @classmethod
     def add_obj(cls, obj, node=None, left=True):
-        cls.__is_node(obj)
-        if node is not None:
-            cls.__is_node(node)
+        TreeObj.is_node(obj)
+        if node:
+            TreeObj.is_node(node)
             if left:
                 node.left = obj
             else:
                 node.right = obj
 
-        cls.tree.append(obj)
-
         return obj
     
-    @staticmethod
-    def __is_node(node):
-        if type(node) != TreeObj:
-            raise TypeError    
-        
     @classmethod
-    def predict(cls, root, x):
-        # node = root
-        # for i in x:
-        #     if i:
-        #         if node.left:
-        #             node = node.left
-        #     else:
-        #         if node.right:
-        #             node = node.right
-        value = ''    
-        for index in x:
-            val = cls.tree[index].value
-            if val:
-                value = val
+    def predict(cls, root, list_x):
+        index = root.index
+        node = root
+        while index in range(len(list_x)):
+            if list_x[index]:
+                node = node.left
+            else:
+                node = node.right
+            index = node.index
 
-        return value
+        return node.value
 
        
-
-
-    
-
 
 root = DecisionTree.add_obj(TreeObj(0))
 v_11 = DecisionTree.add_obj(TreeObj(1), root)
