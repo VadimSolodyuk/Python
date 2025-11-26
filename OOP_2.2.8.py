@@ -77,8 +77,8 @@ class DecisionTree:
     
     @classmethod
     def predict(cls, root, list_x):
-        index = root.index
         node = root
+        index = node.index
         while index in range(len(list_x)):
             if list_x[index]:
                 node = node.left
