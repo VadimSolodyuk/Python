@@ -35,8 +35,7 @@ class TreeObj:
     def __init__(self, index, value=None):
         self.index = index
         self.value = value
-        self.left = None
-        self.right = None
+        self.left = self.right = None
 
     @property
     def left(self):
