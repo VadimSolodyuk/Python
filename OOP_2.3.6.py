@@ -47,13 +47,13 @@ class FloatValue:
 class Cell:
     value = FloatValue()
    
-    def __init__(self, value):
+    def __init__(self, value=0.0):
         self.value = value
 
 
 class TableSheet:
     def __init__(self, N, M):
-        self.cells = [[Cell(0.0) for _ in range(M)] for _ in range(N)]
+        self.cells = [[Cell( ) for _ in range(M)] for _ in range(N)]
 
 
 

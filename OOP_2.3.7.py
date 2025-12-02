@@ -81,8 +81,8 @@ class RegisterForm:
     
     def show(self):
         form = type(self)
-        print(f'<{form}>\n\
-            Логин: {self.login}\
-            Пароль: {self.password}\
-            Email: {self.email}\
-            </{form}>')
+        print(f'<form>\n\
+            Логин: {self.login}\n\
+            Пароль: {self.password}\n\
+            Email: {self.email}\n\
+            </form>')
